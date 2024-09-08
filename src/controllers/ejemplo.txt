@@ -1,0 +1,23 @@
+find()
+Devuelve todos los documentos que coinciden con las condiciones especificadas.
+
+findOne()
+Devuelve el primer documento que coincida con las condiciones.
+
+findById()
+Busca un documento por su ID único.
+
+countDocuments()
+Cuenta cuántos documentos coinciden con una condición.
+
+limit()
+Limita el número de documentos devueltos.
+
+updateOne()
+Actualiza un solo documento que coincida con una condición.
+
+deleteOne()
+Elimina un solo documento que coincida con la condición.
+
+create()
+Crea y guarda un documento directamente.
