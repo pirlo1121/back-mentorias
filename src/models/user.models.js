@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt'
 
 const { Schema, model } = mongoose;
 
@@ -23,6 +24,14 @@ const usuarioSchema = new Schema({
     type: Date,
     default: Date.now 
   }
+});
+
+//hash
+usuarioSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
 });
 
 const Usuario = model('Usuario', usuarioSchema);

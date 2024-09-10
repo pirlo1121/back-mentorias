@@ -1,5 +1,6 @@
 import { generateToken } from "../middleware/createToken.js";
 import Usuario from "../models/user.models.js";
+import bcrypt from 'bcrypt'
 
 const getUsers = async (req, res)=>{ 
     try{
@@ -30,28 +31,27 @@ const createUser = async (req, res)=>{
         console.error('Error al crear usuario:', error);
       }
 }
-const login = async (req, res)=>{
+const login = async (req, res) => {
     try {
-        const {email, password} = req.body
-        const userFound = await Usuario.findOne({email})
-    
-        if( !userFound ) return res.status( 400 ).json({ok: false, msg: 'el usuario no existe'})
-    
-        const userData = userFound.toObject();
-        delete userData.password;
-    
-        // console.log(`delete pass: ${userData}`)
-        const payload = {...userData}
-    
-        const token = generateToken(payload)
-        // console.log(token)
-    
-        res.status(200).json({ok: true, token})
+      const { email, password } = req.body;
+      const userFound = await Usuario.findOne({ email });
+  
+      if (!userFound) return res.status(400).json({ ok: false, msg: 'El usuario no existe' });
+  
+      const validPassword = await bcrypt.compare(password, userFound.password);
+      if (!validPassword) return res.status(400).json({ ok: false, msg: 'Contraseña incorrecta' });
+  
+      const userData = userFound.toObject();
+      delete userData.password;
+  
+      const payload = { ...userData };
+      const token = generateToken(payload);
+  
+      res.status(200).json({ ok: true, token });
     } catch (error) {
-        console.error(erro)
-        res.status(500).json({ok: false, msg: 'Error'})
+      console.error(error);
+      res.status(500).json({ ok: false, msg: 'Error' });
     }
-
-}
+  };
 
 export {getUsers, createUser, login}
