@@ -12,7 +12,7 @@ app.use(cors());
 dbConection()
 
 
-app.use('/api', usurios())
+app.use('/api', usurios)
 
 app.listen(port, ()=>{
     console.log(`runing in port: ${port}`)

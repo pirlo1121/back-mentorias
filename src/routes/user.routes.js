@@ -1,16 +1,11 @@
 import { Router } from "express";
 import { createUser, getUsers, login } from "../controllers/user.controller.js";
+import validateToken from '../middleware/validateToken.js'
 
 const router = Router();
 
-function usurios(){
-    
-    router.get('/users', getUsers)
-    router.post('/users', createUser)
-    router.post('/login', login)
+router.get('/users', validateToken ,getUsers)
+router.post('/users', createUser)
+router.post('/login', login)
 
-    return router
-
-}
-
-export default usurios
+export default router
